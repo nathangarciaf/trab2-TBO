@@ -1,7 +1,5 @@
 #include "grafo.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 #define INIT 100
 
@@ -28,6 +26,38 @@ struct Grafo {
     int *clientes;
     int tam_c, alloc_c;
 };
+
+Grafo *read_graph(FILE *f, int vertices, int servidores, int clientes, int monitores, int arestas){
+    Grafo  *g = inicializa_grafo(vertices,servidores,clientes,monitores);
+    int id_aux, id1, id2;
+    float peso;
+    char tipo;
+
+    tipo = 'S';
+    for (int i = 0; i < servidores; i++){
+        fscanf(f,"%d", &id_aux);
+        g = adiciona_vertice(g, id_aux, tipo);
+    }
+
+    tipo = 'C';
+    for (int i = 0; i < clientes; i++){
+        fscanf(f,"%d", &id_aux);
+        g = adiciona_vertice(g, id_aux, tipo);
+    }
+
+    tipo = 'M';
+    for (int i = 0; i < monitores; i++){
+        fscanf(f,"%d", &id_aux);
+        g = adiciona_vertice(g, id_aux, tipo);
+    }
+
+    for(int i = 0; i < arestas; i++){
+        fscanf(f, "%d %d %f", &id1, &id2, &peso);
+        g = adiciona_aresta(g, id1, id2, peso);
+    }
+    fclose(f);
+    return g;
+}
 
 
 Grafo * inicializa_grafo(int v, int s, int c, int m){
