@@ -13,6 +13,11 @@ int main(int argc, char *argv[]){
     float peso;
     char tipo;
 
+    FILE *file = fopen(argv[1], "r");
+    if(!file){
+        printf("ARQUIVO DE ENTRADA INEXISTENTE!\n");
+    }
+
     scanf("%d %d", &vertices, &arestas);
     scanf("%d %d %d", &servidores, &clientes, &monitores);
 
