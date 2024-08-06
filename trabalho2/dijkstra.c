@@ -11,7 +11,7 @@ Item make_item(int id, double value) {
     value(t) = value;
     return t;
 }
-
+/*
 float dijkstra(Grafo * grafo, int origem, int destino){
     // vetores auxiliares
     float *distancias = (float*)calloc(grafo->qtd_vertices, sizeof(float));
@@ -56,3 +56,4 @@ float dijkstra(Grafo * grafo, int origem, int destino){
 
     return custo;
 }
+*/

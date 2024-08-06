@@ -86,8 +86,7 @@ Grafo * adiciona_vertice(Grafo *grafo, int id, char tipo){
 Grafo * adiciona_aresta(Grafo *grafo, int id_no1, int id_no2, float peso){
     if(grafo->a[id_no1].alloc == grafo->a[id_no1].tam){
         grafo->a[id_no1].alloc *= 2;
-        grafo->a[id_no1].arestas_vizinhas = (Aresta **)realloc(grafo->a[id_no1].arestas_vizinhas, grafo->a[id_no1].alloc * sizeof(Aresta*));
-        
+        grafo->a[id_no1].arestas_vizinhas = (Aresta **)realloc(grafo->a[id_no1].arestas_vizinhas, grafo->a[id_no1].alloc *sizeof(Aresta*));
     }
 
     Aresta *a = (Aresta*)calloc(1, sizeof(Aresta));
@@ -117,25 +116,26 @@ void libera_grafo(Grafo *grafo){
 
 void imprime_grafo(Grafo *grafo){
 
-    printf("Servidores:\n");
+    printf("Servidores (%d):\n", grafo->tam_s);
     for(int i = 0; i < grafo->tam_s; i++){
         printf("%d\n", grafo->servidores[i]);
     }
 
-    printf("Clientes:\n");
+    printf("Clientes (%d):\n", grafo->tam_c);
     for(int i = 0; i < grafo->tam_c; i++){
         printf("%d\n", grafo->clientes[i]);
     }
 
-    printf("Monitores:\n");
+    printf("Monitores (%d):\n", grafo->tam_m);
     for(int i = 0; i < grafo->tam_m; i++){
         printf("%d\n", grafo->monitores[i]);
     }
 
-    printf("Arestas\n");
+    printf("Arestas:\n");
     for(int i = 0; i < grafo->tam_v; i++){
-        for(int j = 0; j < grafo->a[i].tam; i++){
-            printf("%d, %d : %f\n", i, grafo->a[i].arestas_vizinhas[j]->id, grafo->a[i].arestas_vizinhas[j]->peso);
+        for(int j = 0; j < grafo->a[i].tam; j++){
+            Aresta *a = grafo->a[i].arestas_vizinhas[j];
+            printf("%d, %d : %f\n", i, a->id, a->peso);
         }
     }
 }
