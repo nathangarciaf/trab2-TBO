@@ -27,7 +27,12 @@ struct Grafo {
     int tam_c, alloc_c;
 };
 
-Grafo *read_graph(FILE *f, int vertices, int servidores, int clientes, int monitores, int arestas){
+Grafo *read_graph(FILE *f){
+    int vertices, arestas, servidores, clientes, monitores;
+
+    fscanf(f,"%d %d", &vertices, &arestas);
+    fscanf(f, "%d %d %d", &servidores, &clientes, &monitores);
+
     Grafo  *g = inicializa_grafo(vertices,servidores,clientes,monitores);
     int id_aux, id1, id2;
     float peso;
@@ -55,7 +60,6 @@ Grafo *read_graph(FILE *f, int vertices, int servidores, int clientes, int monit
         fscanf(f, "%d %d %f", &id1, &id2, &peso);
         g = adiciona_aresta(g, id1, id2, peso);
     }
-    fclose(f);
     return g;
 }
 
