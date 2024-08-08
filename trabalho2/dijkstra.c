@@ -8,6 +8,54 @@ Item make_item(int id, double value) {
     return t;
 }
 
+double dijkstra_l(Grafo * grafo, int origem, int destino){
+    int tam_grafo = retorna_tamanho_grafo(grafo);
+
+    int * visitados = (int*)calloc(tam_grafo, sizeof(int));
+    PQ * nao_visitados = PQ_init(tam_grafo);
+    double * custos = (double*)calloc(tam_grafo, sizeof(double));
+    int * antecessores = (int*)calloc(tam_grafo, sizeof(int));
+
+    PQ_insert(nao_visitados, make_item(origem, 0));
+
+    for(int i = 0; i < tam_grafo; i++){
+        custos[i] = __DBL_MAX__;
+    }
+
+    custos[origem] = 0;
+
+    while(!PQ_empty(nao_visitados)){
+        Item item = PQ_delmin(nao_visitados);
+        int id = id(item);
+        visitados[id] = 1;
+        
+        int qtd_vizinhos = retorna_tamanho_vetor_vizinhos(grafo, id);
+        Aresta ** vizinhos = retorna_vetor_vizinhos(grafo, id);
+
+        for(int i = 0; i < qtd_vizinhos; i++){
+            int id_vizinho = retorna_id_aresta(vizinhos[i]);
+            double peso = retorna_peso_aresta(vizinhos[i]);
+
+            if(visitados[id_vizinho] == 0){
+                if(custos[id_vizinho] > custos[id] + peso){
+                    custos[id_vizinho] = custos[id] + peso;
+                    PQ_insert(nao_visitados, make_item(id_vizinho, custos[id_vizinho]));
+                    antecessores[id_vizinho] = id;
+                }
+            }
+        }
+    }
+
+    double result = custos[destino];
+
+    free(visitados);
+    free(custos);
+    free(antecessores);
+    PQ_finish(nao_visitados);
+
+    return result;
+}
+
 float dijkstra(Grafo *g, int origem, int dest){
     int vertices = get_vertex(g);
     printf("VERTICES: %d\n", vertices);

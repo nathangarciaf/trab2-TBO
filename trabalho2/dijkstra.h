@@ -7,5 +7,6 @@
 #include "PQ.h"
 
 float dijkstra(Grafo *g, int origem, int dest);
+double dijkstra_l(Grafo * grafo, int origem, int destino);
 
 #endif
