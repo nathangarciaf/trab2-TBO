@@ -10,7 +10,7 @@ Item make_item(int id, double value) {
 
 float dijkstra(Grafo *g, int origem, int dest){
     int vertices = get_vertex(g);
-    printf("%d", vertices);
+    printf("VERTICES: %d\n", vertices);
     int *visitados = (int*)calloc(vertices,sizeof(int));
     float *distancias = (float*)calloc(vertices, sizeof(float));
     int *pred = (int*)calloc(vertices, sizeof(int));

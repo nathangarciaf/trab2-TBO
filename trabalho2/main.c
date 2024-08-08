@@ -14,12 +14,12 @@ int main(int argc, char *argv[]){
     }
 
     Grafo *grafo = read_graph(file);
-
     fclose(file);
     //imprime_grafo(grafo);
-    libera_grafo(grafo);
+    
 
     float v = dijkstra(grafo, 0, 2);
     printf("\n\n%f", v);
     return 0;
+    libera_grafo(grafo);
 }
