@@ -15,6 +15,8 @@ Grafo * adiciona_aresta(Grafo *grafo, int id_no1, int id_no2, float peso);
 Grafo *read_graph(FILE *f);
 void libera_grafo(Grafo *grafo);
 
+int get_vertex(Grafo *g);
+
 // para fins de depuracao
 void imprime_grafo(Grafo *grafo);
 

@@ -18,4 +18,7 @@ int main(int argc, char *argv[]){
     fclose(file);
     imprime_grafo(grafo);
     libera_grafo(grafo);
+
+    float v = dijkstra(grafo, 0, 2);
+    return 0;
 }

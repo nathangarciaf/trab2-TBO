@@ -11,6 +11,29 @@ Item make_item(int id, double value) {
     value(t) = value;
     return t;
 }
+
+float dijkistra(Grafo *g, int origem, int dest){
+    int vertices = get_vertex(g);
+    int *visitados = (int*)calloc(vertices,sizeof(int));
+    float *distancias = (float*)calloc(vertices, sizeof(float));
+    int *pred = (int*)calloc(vertices, sizeof(int));
+
+    for(int i = 0; i < vertices; i++){
+        visitados[i] = 0;
+        pred[i] = origem;
+        distancias[i] = __FLT_MAX__;
+    }
+
+    for(int i = 0; i < vertices; i++){
+        print("%.2f\n",distancias[i]);
+    }
+
+    free(visitados);
+    free(distancias);
+    free(pred);
+    return 0;
+}
+
 /*
 float dijkstra(Grafo * grafo, int origem, int destino){
     // vetores auxiliares

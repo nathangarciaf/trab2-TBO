@@ -132,7 +132,11 @@ Grafo * adiciona_aresta(Grafo *grafo, int id_no1, int id_no2, float peso){
     grafo->a[id_no1].tam++;
 
     return grafo;
-} 
+}
+
+int get_vertex(Grafo *g){
+    return g->tam_v;
+}
 
 void libera_grafo(Grafo *grafo){
     for(int i = 0; i < grafo->tam_v; i++){
