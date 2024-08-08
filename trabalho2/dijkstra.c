@@ -8,8 +8,44 @@ Item make_item(int id, double value) {
     return t;
 }
 
-double dijkstra_l(Grafo * grafo, int origem, int destino){
-    int tam_grafo = retorna_tamanho_grafo(grafo);
+void fuck(Grafo *g){
+    double rtt_aux = 0.0;
+
+    for(int i = 0; i < get_server_tam(g); i++){
+        for(int j = 0; j < get_client_tam(g); j++){
+
+            double rtt_real = 0.0;
+            rtt_real += dijkstra_l(g, get_server(g, i), get_client(g,j));
+            rtt_real += dijkstra_l(g, get_client(g,j), get_server(g, i));
+
+            for(int k = 0; k < get_monitor_tam(g); k++){
+
+                double rtt_aprox = 0.0;
+
+                rtt_aprox += dijkstra_l(g, get_server(g, i), get_monitor(g, k));
+                rtt_aprox += dijkstra_l(g, get_monitor(g, k), get_server(g, i));
+
+                rtt_aprox += dijkstra_l(g, get_client(g,j), get_monitor(g, k));
+                rtt_aprox += dijkstra_l(g, get_monitor(g, k), get_client(g,j));
+
+                if(rtt_aux == 0){
+                    rtt_aux = rtt_aprox/rtt_real;
+                }
+                else {
+                    if(rtt_aux > rtt_aprox/rtt_real){
+                        rtt_aux = rtt_aprox/rtt_real;
+                    }
+                }
+            }
+            printf("S:%d , C: %d, RELAÇÃO: %lf\n\n", get_server(g, i),  get_client(g,j), rtt_aux);
+            rtt_aux = 0;
+        }
+    }
+    return;
+}
+
+double dijkstra_l(Grafo *grafo, int origem, int destino){
+    int tam_grafo = get_vertex(grafo);
 
     int * visitados = (int*)calloc(tam_grafo, sizeof(int));
     PQ * nao_visitados = PQ_init(tam_grafo);
@@ -56,6 +92,7 @@ double dijkstra_l(Grafo * grafo, int origem, int destino){
     return result;
 }
 
+/*
 float dijkstra(Grafo *g, int origem, int dest){
     int vertices = get_vertex(g);
     printf("VERTICES: %d\n", vertices);
@@ -78,51 +115,4 @@ float dijkstra(Grafo *g, int origem, int dest){
     free(pred);
 
     return 1.0;
-}
-
-/*
-float dijkstra(Grafo * grafo, int origem, int destino){
-    // vetores auxiliares
-    float *distancias = (float*)calloc(grafo->qtd_vertices, sizeof(float));
-    int *anterior = (int*)calloc(grafo->qtd_vertices, sizeof(int));
-    PQ * pq = PQ_init(grafo->qtd_vertices);
-
-    int atual = origem;
-
-    for (int i = 0; i < grafo->qtd_vertices; i++){
-        distancias[i] = __FLT_MAX__; //define como infinito
-        anterior[i] = -1;
-        PQ_insert(pq, make_item(i, distancias[i]));
-    }
-
-    distancias[origem] = 0;
-    PQ_decrease_key(pq, origem, distancias[origem]);
-
-    while (PQ_size(pq) > 0){
-        Item item = PQ_delmin(pq);
-        atual = id(item);
-
-        if (atual == destino) {
-            break;
-        }
-
-        for (int i = 0; i < grafo->qtd_vertices; i++){
-            if (grafo->arestas[atual][i] != 0){
-                if (distancias[i] > distancias[atual] + grafo->arestas[atual][i]){
-                    distancias[i] = distancias[atual] + grafo->arestas[atual][i];
-                    anterior[i] = atual;
-                    PQ_decrease_key(pq, i, distancias[i]);
-                }
-            }
-        }
-    }
-
-    float custo = distancias[destino];
-
-    free(distancias);
-    free(anterior);
-    PQ_finish(pq);
-
-    return custo;
-}
-*/
+}*/

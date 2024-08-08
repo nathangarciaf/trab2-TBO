@@ -16,6 +16,18 @@ Grafo *read_graph(FILE *f);
 void libera_grafo(Grafo *grafo);
 
 int get_vertex(Grafo *g);
+Aresta **retorna_vetor_vizinhos(Grafo *g, int id);
+int retorna_tamanho_vetor_vizinhos(Grafo *g, int id);
+double retorna_peso_aresta(Aresta *a);
+int retorna_id_aresta(Aresta *a);
+
+int get_server_tam(Grafo *g);
+int get_monitor_tam(Grafo *g);
+int get_client_tam(Grafo *g);
+
+int get_server(Grafo *g, int id);
+int get_monitor(Grafo *g, int id);
+int get_client(Grafo *g, int id);
 
 // para fins de depuracao
 void imprime_grafo(Grafo *grafo);

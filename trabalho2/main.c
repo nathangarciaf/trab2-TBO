@@ -17,9 +17,10 @@ int main(int argc, char *argv[]){
     fclose(file);
     //imprime_grafo(grafo);
     
-
-    float v = dijkstra(grafo, 0, 2);
-    printf("\n\n%f", v);
-    return 0;
+    fuck(grafo);
+    float v = dijkstra_l(grafo, 0, 4);
+    printf("%f\n", v);
     libera_grafo(grafo);
+    return 0;
+    
 }

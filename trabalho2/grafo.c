@@ -1,6 +1,5 @@
 #include "grafo.h"
 
-
 #define INIT 100
 
 struct aresta {
@@ -26,6 +25,48 @@ struct Grafo {
     int *clientes;
     int tam_c, alloc_c;
 };
+
+int get_server_tam(Grafo *g){
+    return g->tam_s;
+}
+
+int get_monitor_tam(Grafo *g){
+    return g->tam_m;
+}
+
+int get_client_tam(Grafo *g){
+    return g->tam_c;
+}
+
+int get_server(Grafo *g, int id){
+    return g->servidores[id];
+}
+
+int get_monitor(Grafo *g, int id){
+    return g->monitores[id];
+}
+
+int get_client(Grafo *g, int id){
+    return g->clientes[id];
+}
+
+Aresta **retorna_vetor_vizinhos(Grafo *g, int id){
+    ArestaList *a = g->a;
+    return a[id].arestas_vizinhas;
+}
+
+int retorna_tamanho_vetor_vizinhos(Grafo *g, int id){
+    ArestaList *a = g->a;
+    return a[id].tam;
+}
+
+double retorna_peso_aresta(Aresta *a){
+    return a->peso;
+}
+
+int retorna_id_aresta(Aresta *a) {
+    return a->id;
+}
 
 Grafo *read_graph(FILE *f){
     int vertices, arestas, servidores, clientes, monitores;
@@ -88,15 +129,8 @@ Grafo * inicializa_grafo(int v, int s, int c, int m){
 
     grafo->a = a_list;
 
-    printf("%d\n",v);
     grafo->tam_v = v;
-    
-    /*grafo->a = (ArestaList*)calloc(v, sizeof(ArestaList));
-    for(int i = 0; i < v; i++){
-        grafo->a[i].arestas_vizinhas = (Aresta**)calloc(INIT, sizeof(Aresta*));
-        grafo->a[i].alloc = INIT;
-        grafo->a[i].tam = 0;
-    }*/
+
 
     return grafo;
 }
