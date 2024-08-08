@@ -88,6 +88,7 @@ Grafo * inicializa_grafo(int v, int s, int c, int m){
 
     grafo->a = a_list;
 
+    printf("%d\n",v);
     grafo->tam_v = v;
     
     /*grafo->a = (ArestaList*)calloc(v, sizeof(ArestaList));

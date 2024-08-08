@@ -1,9 +1,5 @@
 #include "dijkstra.h"
-#include "grafo.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include "item.h"
-#include "PQ.h"
 
 Item make_item(int id, double value) {
     Item t;
@@ -12,8 +8,9 @@ Item make_item(int id, double value) {
     return t;
 }
 
-float dijkistra(Grafo *g, int origem, int dest){
+float dijkstra(Grafo *g, int origem, int dest){
     int vertices = get_vertex(g);
+    printf("%d", vertices);
     int *visitados = (int*)calloc(vertices,sizeof(int));
     float *distancias = (float*)calloc(vertices, sizeof(float));
     int *pred = (int*)calloc(vertices, sizeof(int));
@@ -25,13 +22,14 @@ float dijkistra(Grafo *g, int origem, int dest){
     }
 
     for(int i = 0; i < vertices; i++){
-        print("%.2f\n",distancias[i]);
+        printf("%.2f\n",distancias[i]);
     }
 
     free(visitados);
     free(distancias);
     free(pred);
-    return 0;
+
+    return 1.0;
 }
 
 /*
