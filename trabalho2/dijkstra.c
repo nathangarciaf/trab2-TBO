@@ -8,18 +8,15 @@ Item make_item(int id, double value) {
     return t;
 }
 
-void fuck(Grafo *g){
+void rtt(Grafo *g,  FILE *s){
     double rtt_aux = 0.0;
-
     for(int i = 0; i < get_server_tam(g); i++){
         for(int j = 0; j < get_client_tam(g); j++){
 
             double rtt_real = 0.0;
             rtt_real += dijkstra_l(g, get_server(g, i), get_client(g,j));
             rtt_real += dijkstra_l(g, get_client(g,j), get_server(g, i));
-
             for(int k = 0; k < get_monitor_tam(g); k++){
-
                 double rtt_aprox = 0.0;
 
                 rtt_aprox += dijkstra_l(g, get_server(g, i), get_monitor(g, k));
@@ -37,7 +34,7 @@ void fuck(Grafo *g){
                     }
                 }
             }
-            printf("S:%d , C: %d, RELAÇÃO: %lf\n\n", get_server(g, i),  get_client(g,j), rtt_aux);
+            fprintf(s,"%d %d %lf\n", get_server(g, i),  get_client(g,j), rtt_aux);
             rtt_aux = 0;
         }
     }
@@ -45,6 +42,7 @@ void fuck(Grafo *g){
 }
 
 double dijkstra_l(Grafo *grafo, int origem, int destino){
+    clock_t dji_s = clock();
     int tam_grafo = get_vertex(grafo);
 
     int * visitados = (int*)calloc(tam_grafo, sizeof(int));
@@ -89,6 +87,9 @@ double dijkstra_l(Grafo *grafo, int origem, int destino){
     free(antecessores);
     PQ_finish(nao_visitados);
 
+    clock_t dji_e = clock();
+    double time_taken = ((double)(dji_e-dji_s))/CLOCKS_PER_SEC; // in seconds 
+    printf("DJIKSTRA: %f\n", time_taken);
     return result;
 }
 

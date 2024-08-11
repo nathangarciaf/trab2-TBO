@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #include "grafo.h"
 #include "PQ.h"
+#include <time.h> 
 
 //float dijkstra(Grafo *g, int origem, int dest);
 double dijkstra_l(Grafo *grafo, int origem, int destino);
-void fuck(Grafo *g);
+void rtt(Grafo *g, FILE *s);
 
 #endif

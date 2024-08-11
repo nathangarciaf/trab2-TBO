@@ -59,6 +59,8 @@
   "files.associations": {
     "dijkstra.h": "c",
     "string.h": "c",
-    "grafo.h": "c"
+    "grafo.h": "c",
+    "pq.h": "c",
+    "item.h": "c"
   }
 }
