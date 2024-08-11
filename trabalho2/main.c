@@ -22,13 +22,8 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    clock_t start = clock();
     Grafo *grafo = read_graph(file);
-    clock_t read = clock();
 
-
-    double time_taken = ((double)(read-start))/CLOCKS_PER_SEC; // in seconds 
-    printf("LEITURA: %f\n", time_taken);
     fclose(file);
     //imprime_grafo(grafo);
      
@@ -42,8 +37,8 @@ int main(int argc, char *argv[]){
     rtt(grafo, saida);
     clock_t rtt_end = clock();
 
-    time_taken = ((double)(rtt_end-rtt_start))/CLOCKS_PER_SEC; // in seconds 
-    printf("LEITURA: %f\n", time_taken);
+    double time_taken = ((double)(rtt_end-rtt_start))/CLOCKS_PER_SEC; // in seconds 
+    printf("RTT: %f\n", time_taken);
 
     fclose(saida);
     libera_grafo(grafo);
