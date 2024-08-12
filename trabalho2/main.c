@@ -27,20 +27,21 @@ int main(int argc, char *argv[]){
     Grafo *grafo = read_graph(file);
     fclose(file);
      
+
+    PQ *results = PQ_init(get_server_tam(grafo)*get_client_tam(grafo));
+    rtt(grafo, results);
+    libera_grafo(grafo);
+
     FILE *saida = fopen(argv[2],"w");
     if(!saida){
         printf("ARQUIVO DE SAIDA NÃO CONSEGUIU SER CRIADO!\n");
         return 0;
     }
 
-    PQ *pq = PQ_init(get_server_tam(grafo)*get_client_tam(grafo));
-    rtt_l(grafo, saida, pq);
-
-    print_rtt(pq, saida);
+    print_rtt(results, saida);
     fclose(saida);
 
-    libera_grafo(grafo);
-    PQ_finish(pq);
+    PQ_finish(results);
 
     return 0;
     
