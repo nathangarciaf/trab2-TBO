@@ -6,6 +6,7 @@
 #include "PQ.h"
 #include "item.h"
 
+#include <string.h>
 #include <time.h> 
 
 
@@ -14,6 +15,7 @@ int main(int argc, char *argv[]){
 
     if(argc < 3){
         printf("DIRETÓRIO INSUFICIENTE!\n");
+        fclose(file);
         return 0;
     }
 
@@ -34,11 +36,11 @@ int main(int argc, char *argv[]){
     }
 
     clock_t rtt_start = clock();
-    rtt(grafo, saida);
+    rtt_l(grafo, saida);
     clock_t rtt_end = clock();
 
     double time_taken = ((double)(rtt_end-rtt_start))/CLOCKS_PER_SEC; // in seconds 
-    printf("RTT: %f\n", time_taken);
+    printf("RTT: %f\n\n", time_taken);
 
     fclose(saida);
     libera_grafo(grafo);

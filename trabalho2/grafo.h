@@ -20,6 +20,9 @@ Aresta **retorna_vetor_vizinhos(Grafo *g, int id);
 int retorna_tamanho_vetor_vizinhos(Grafo *g, int id);
 double retorna_peso_aresta(Aresta *a);
 int retorna_id_aresta(Aresta *a);
+void print_costs(double *custos, int tam_grafo, int origem);
+double *get_cost_array(Grafo *g, int id);
+double get_cost(Grafo *g, int id1, int id2);
 
 int get_server_tam(Grafo *g);
 int get_monitor_tam(Grafo *g);
