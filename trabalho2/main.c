@@ -25,9 +25,7 @@ int main(int argc, char *argv[]){
     }
 
     Grafo *grafo = read_graph(file);
-
     fclose(file);
-    //imprime_grafo(grafo);
      
     FILE *saida = fopen(argv[2],"w");
     if(!saida){
@@ -35,15 +33,15 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    clock_t rtt_start = clock();
-    rtt_l(grafo, saida);
-    clock_t rtt_end = clock();
+    PQ *pq = PQ_init(get_server_tam(grafo)*get_client_tam(grafo));
+    rtt_l(grafo, saida, pq);
 
-    double time_taken = ((double)(rtt_end-rtt_start))/CLOCKS_PER_SEC; // in seconds 
-    printf("RTT: %f\n\n", time_taken);
-
+    print_rtt(pq, saida);
     fclose(saida);
+
     libera_grafo(grafo);
+    PQ_finish(pq);
+
     return 0;
     
 }

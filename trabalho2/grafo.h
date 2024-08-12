@@ -9,7 +9,7 @@ typedef struct aresta Aresta;
 typedef struct aresta_list ArestaList;
 typedef struct Grafo Grafo;
 
-Grafo * inicializa_grafo(int v, int s, int c, int m);
+Grafo * inicializa_grafo(int v, int s, int c, int m, int a);
 Grafo * adiciona_vertice(Grafo *grafo, int id, char tipo);
 Grafo * adiciona_aresta(Grafo *grafo, int id_no1, int id_no2, float peso);
 Grafo *read_graph(FILE *f);
@@ -27,6 +27,8 @@ double get_cost(Grafo *g, int id1, int id2);
 int get_server_tam(Grafo *g);
 int get_monitor_tam(Grafo *g);
 int get_client_tam(Grafo *g);
+
+int get_edge_alloc(Grafo *g);
 
 int get_server(Grafo *g, int id);
 int get_monitor(Grafo *g, int id);

@@ -33,7 +33,7 @@ Grafo *read_graph(FILE *f){
     fscanf(f,"%d %d", &vertices, &arestas);
     fscanf(f, "%d %d %d", &servidores, &clientes, &monitores);
 
-    Grafo  *g = inicializa_grafo(vertices,servidores,clientes,monitores);
+    Grafo  *g = inicializa_grafo(vertices,servidores,clientes,monitores, arestas);
     int id_aux, id1, id2;
     float peso;
     char tipo;
@@ -64,7 +64,7 @@ Grafo *read_graph(FILE *f){
 }
 
 
-Grafo * inicializa_grafo(int v, int s, int c, int m){
+Grafo * inicializa_grafo(int v, int s, int c, int m, int a){
     Grafo *grafo = (Grafo*)calloc(1, sizeof(Grafo));
 
     grafo->servidores = (int*)calloc(s, sizeof(int));
