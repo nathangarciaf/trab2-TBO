@@ -41,24 +41,24 @@ Grafo *read_graph(FILE *f){
     tipo = 'S';
     for (int i = 0; i < servidores; i++){
         fscanf(f,"%d", &id_aux);
-        g = adiciona_vertice(g, id_aux, tipo);
+        g = add_vertex(g, id_aux, tipo);
     }
 
     tipo = 'C';
     for (int i = 0; i < clientes; i++){
         fscanf(f,"%d", &id_aux);
-        g = adiciona_vertice(g, id_aux, tipo);
+        g = add_vertex(g, id_aux, tipo);
     }
 
     tipo = 'M';
     for (int i = 0; i < monitores; i++){
         fscanf(f,"%d", &id_aux);
-        g = adiciona_vertice(g, id_aux, tipo);
+        g = add_vertex(g, id_aux, tipo);
     }
 
     for(int i = 0; i < arestas; i++){
         fscanf(f, "%d %d %f", &id1, &id2, &peso);
-        g = adiciona_aresta(g, id1, id2, peso);
+        g = add_edge(g, id1, id2, peso);
     }
     return g;
 }
@@ -93,7 +93,7 @@ Grafo * inicializa_grafo(int v, int s, int c, int m, int a){
     return grafo;
 }
 
-Grafo * adiciona_vertice(Grafo *grafo, int id, char tipo){
+Grafo * add_vertex(Grafo *grafo, int id, char tipo){
     if(tipo == 'S'){
         grafo->servidores[grafo->tam_s] = id;
         grafo->tam_s++;
@@ -110,7 +110,7 @@ Grafo * adiciona_vertice(Grafo *grafo, int id, char tipo){
     return grafo;
 }
 
-Grafo * adiciona_aresta(Grafo *grafo, int id_no1, int id_no2, float peso){
+Grafo * add_edge(Grafo *grafo, int id_no1, int id_no2, float peso){
     if(grafo->a[id_no1].alloc == grafo->a[id_no1].tam){
         grafo->a[id_no1].alloc *= 2;
         grafo->a[id_no1].arestas_vizinhas = (Aresta **)realloc(grafo->a[id_no1].arestas_vizinhas, grafo->a[id_no1].alloc *sizeof(Aresta*));

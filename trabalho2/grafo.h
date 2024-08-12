@@ -10,8 +10,8 @@ typedef struct aresta_list ArestaList;
 typedef struct Grafo Grafo;
 
 Grafo * inicializa_grafo(int v, int s, int c, int m, int a);
-Grafo * adiciona_vertice(Grafo *grafo, int id, char tipo);
-Grafo * adiciona_aresta(Grafo *grafo, int id_no1, int id_no2, float peso);
+Grafo * add_vertex(Grafo *grafo, int id, char tipo);
+Grafo * add_edge(Grafo *grafo, int id_no1, int id_no2, float peso);
 Grafo *read_graph(FILE *f);
 void libera_grafo(Grafo *grafo);
 

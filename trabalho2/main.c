@@ -26,7 +26,6 @@ int main(int argc, char *argv[]){
 
     Grafo *grafo = read_graph(file);
     fclose(file);
-     
 
     PQ *results = PQ_init(get_server_tam(grafo)*get_client_tam(grafo));
     rtt(grafo, results);
