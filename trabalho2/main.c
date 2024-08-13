@@ -29,7 +29,7 @@ int main(int argc, char *argv[]){
 
     PQ *results = PQ_init(get_server_tam(grafo)*get_client_tam(grafo));
     rtt(grafo, results);
-    libera_grafo(grafo);
+    free_graph(grafo);
 
     FILE *saida = fopen(argv[2],"w");
     if(!saida){

@@ -8,8 +8,8 @@ struct aresta {
 };
 
 struct aresta_list {
-    Aresta **arestas_vizinhas;
-    double *custos;
+    Aresta **neighboring_edges;
+    double *costs;
     int tam, alloc;
 };
 
@@ -27,13 +27,42 @@ struct Grafo {
     int tam_c, alloc_c;
 };
 
+Grafo *graph_init(int v, int s, int c, int m, int a){
+    Grafo *grafo = (Grafo*)calloc(1, sizeof(Grafo));
+
+    grafo->servidores = (int*)calloc(s, sizeof(int));
+    grafo->tam_s = 0;
+    grafo->alloc_s = s;
+
+    grafo->clientes = (int*)calloc(c, sizeof(int));
+    grafo->tam_c = 0;
+    grafo->alloc_c = c;
+
+    grafo->monitores = (int*)calloc(m, sizeof(int));
+    grafo->tam_m = 0;
+    grafo->alloc_m = m;
+
+    ArestaList *a_list = (ArestaList*)calloc(v, sizeof(ArestaList));
+    for(int i = 0; i < v; i++){
+        a_list[i].neighboring_edges = (Aresta**)calloc(INIT, sizeof(Aresta*));
+        a_list[i].alloc = INIT;
+        a_list[i].tam = 0;
+        a_list[i].costs = (double*)calloc(v, sizeof(double));
+    }
+
+    grafo->a = a_list;
+    grafo->tam_v = v;
+
+    return grafo;
+}
+
 Grafo *read_graph(FILE *f){
     int vertices, arestas, servidores, clientes, monitores;
 
     fscanf(f,"%d %d", &vertices, &arestas);
     fscanf(f, "%d %d %d", &servidores, &clientes, &monitores);
 
-    Grafo  *g = inicializa_grafo(vertices,servidores,clientes,monitores, arestas);
+    Grafo  *g = graph_init(vertices,servidores,clientes,monitores, arestas);
     int id_aux, id1, id2;
     float peso;
     char tipo;
@@ -63,36 +92,6 @@ Grafo *read_graph(FILE *f){
     return g;
 }
 
-
-Grafo * inicializa_grafo(int v, int s, int c, int m, int a){
-    Grafo *grafo = (Grafo*)calloc(1, sizeof(Grafo));
-
-    grafo->servidores = (int*)calloc(s, sizeof(int));
-    grafo->tam_s = 0;
-    grafo->alloc_s = s;
-
-    grafo->clientes = (int*)calloc(c, sizeof(int));
-    grafo->tam_c = 0;
-    grafo->alloc_c = c;
-
-    grafo->monitores = (int*)calloc(m, sizeof(int));
-    grafo->tam_m = 0;
-    grafo->alloc_m = m;
-
-    ArestaList *a_list = (ArestaList*)calloc(v, sizeof(ArestaList));
-    for(int i = 0; i < v; i++){
-        a_list[i].arestas_vizinhas = (Aresta**)calloc(INIT, sizeof(Aresta*));
-        a_list[i].alloc = INIT;
-        a_list[i].tam = 0;
-        a_list[i].custos = (double*)calloc(v, sizeof(double));
-    }
-
-    grafo->a = a_list;
-    grafo->tam_v = v;
-
-    return grafo;
-}
-
 Grafo * add_vertex(Grafo *grafo, int id, char tipo){
     if(tipo == 'S'){
         grafo->servidores[grafo->tam_s] = id;
@@ -113,14 +112,14 @@ Grafo * add_vertex(Grafo *grafo, int id, char tipo){
 Grafo * add_edge(Grafo *grafo, int id_no1, int id_no2, float peso){
     if(grafo->a[id_no1].alloc == grafo->a[id_no1].tam){
         grafo->a[id_no1].alloc *= 2;
-        grafo->a[id_no1].arestas_vizinhas = (Aresta **)realloc(grafo->a[id_no1].arestas_vizinhas, grafo->a[id_no1].alloc *sizeof(Aresta*));
+        grafo->a[id_no1].neighboring_edges = (Aresta **)realloc(grafo->a[id_no1].neighboring_edges, grafo->a[id_no1].alloc *sizeof(Aresta*));
     }
 
     Aresta *a = (Aresta*)calloc(1, sizeof(Aresta));
     a->id = id_no2;
     a->peso = peso;
 
-    grafo->a[id_no1].arestas_vizinhas[grafo->a[id_no1].tam] = a;
+    grafo->a[id_no1].neighboring_edges[grafo->a[id_no1].tam] = a;
 
     grafo->a[id_no1].tam++;
 
@@ -157,79 +156,43 @@ int get_client(Grafo *g, int id){
 
 double *get_cost_array(Grafo *g, int id){
     ArestaList *a = g->a;
-    return a[id].custos;
+    return a[id].costs;
 }
 
-Aresta **retorna_vetor_vizinhos(Grafo *g, int id){
+Aresta **get_neighboring_edges(Grafo *g, int id){
     ArestaList *a = g->a;
-    return a[id].arestas_vizinhas;
+    return a[id].neighboring_edges;
 }
 
-int retorna_tamanho_vetor_vizinhos(Grafo *g, int id){
+int get_neighboring_edges_tam(Grafo *g, int id){
     ArestaList *a = g->a;
     return a[id].tam;
 }
 
-double retorna_peso_aresta(Aresta *a){
+double get_edge_value(Aresta *a){
     return a->peso;
 }
 
-int retorna_id_aresta(Aresta *a) {
+int get_edge_id(Aresta *a) {
     return a->id;
 }
 
 double get_cost(Grafo *g, int id1, int id2){
     ArestaList *a = g->a;
-    return a[id1].custos[id2];
+    return a[id1].costs[id2];
 }
 
-void print_costs(double *custos, int tam_grafo, int origem){
-    printf("\n  COSTS:  \n");
-    for(int i = 0; i < tam_grafo; i++){
-        if(i != origem)
-            printf("DIST %d to %d: %lf\n", origem, i, custos[i]);
-    }
-    printf("\n");
-}
-
-
-void libera_grafo(Grafo *grafo){
+void free_graph(Grafo *grafo){
     for(int i = 0; i < grafo->tam_v; i++){
-        free(grafo->a[i].custos);
+        free(grafo->a[i].costs);
         for(int j = 0; j < grafo->a[i].tam; j++){
-            free(grafo->a[i].arestas_vizinhas[j]);
+            free(grafo->a[i].neighboring_edges[j]);
         }
-        free(grafo->a[i].arestas_vizinhas);
+        free(grafo->a[i].neighboring_edges);
     }
     free(grafo->a);
     free(grafo->servidores);
     free(grafo->clientes);
     free(grafo->monitores);
     free(grafo);
-}
-
-void imprime_grafo(Grafo *grafo){
-
-    printf("Servidores (%d):\n", grafo->tam_s);
-    for(int i = 0; i < grafo->tam_s; i++){
-        printf("%d\n", grafo->servidores[i]);
-    }
-
-    printf("Clientes (%d):\n", grafo->tam_c);
-    for(int i = 0; i < grafo->tam_c; i++){
-        printf("%d\n", grafo->clientes[i]);
-    }
-
-    printf("Monitores (%d):\n", grafo->tam_m);
-    for(int i = 0; i < grafo->tam_m; i++){
-        printf("%d\n", grafo->monitores[i]);
-    }
-
-    printf("Arestas:\n");
-    for(int i = 0; i < grafo->tam_v; i++){
-        for(int j = 0; j < grafo->a[i].tam; j++){
-            Aresta *a = grafo->a[i].arestas_vizinhas[j];
-            printf("%d, %d : %f\n", i, a->id, a->peso);
-        }
-    }
 }

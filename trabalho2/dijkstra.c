@@ -77,52 +77,52 @@ void rtt(Grafo *g, PQ *pq){
 }
 
 void dijkstra(Grafo *grafo, int origem){
-    int tam_grafo = get_vertex(grafo);
+    int tam_graph = get_vertex(grafo);
 
-    int *visitados = (int *)calloc(tam_grafo, sizeof(int));
-    double *custos = get_cost_array(grafo, origem);
-    int *antecessores = (int *)calloc(tam_grafo, sizeof(int));
-    PQ *nao_visitados = PQ_init(tam_grafo);
+    int *visited = (int *)calloc(tam_graph, sizeof(int));
+    double *costs = get_cost_array(grafo, origem);
+    int *antecessores = (int *)calloc(tam_graph, sizeof(int));
+    PQ *no_visited = PQ_init(tam_graph);
 
-    for (int i = 0; i < tam_grafo; i++) {
-        custos[i] = __DBL_MAX__;
+    for (int i = 0; i < tam_graph; i++) {
+        costs[i] = __DBL_MAX__;
         antecessores[i] = -1;
     }
     
-    custos[origem] = 0;
-    PQ_insert(nao_visitados, make_item(origem, 0));
+    costs[origem] = 0;
+    PQ_insert(no_visited, make_item(origem, 0));
 
-    while (!PQ_empty(nao_visitados)) {
-        Item item = PQ_delmin(nao_visitados);
+    while (!PQ_empty(no_visited)) {
+        Item item = PQ_delmin(no_visited);
         int id = id(item); 
         
-        if (visitados[id]) 
+        if (visited[id]) 
             continue;
 
-        visitados[id] = 1;
+        visited[id] = 1;
         
 
-        int qtd_vizinhos = retorna_tamanho_vetor_vizinhos(grafo, id);
-        Aresta **vizinhos = retorna_vetor_vizinhos(grafo, id);
+        int qtd_vizinhos = get_neighboring_edges_tam(grafo, id);
+        Aresta **vizinhos = get_neighboring_edges(grafo, id);
 
         for (int i = 0; i < qtd_vizinhos; i++) {
-            int id_vizinho = retorna_id_aresta(vizinhos[i]);
-            double peso = retorna_peso_aresta(vizinhos[i]);
+            int id_vizinho = get_edge_id(vizinhos[i]);
+            double peso = get_edge_value(vizinhos[i]);
 
-            if (!visitados[id_vizinho]) {
-                double novo_custo = custos[id] + peso;
-                if (novo_custo < custos[id_vizinho]) {
-                    custos[id_vizinho] = novo_custo;
+            if (!visited[id_vizinho]) {
+                double novo_custo = costs[id] + peso;
+                if (novo_custo < costs[id_vizinho]) {
+                    costs[id_vizinho] = novo_custo;
                     antecessores[id_vizinho] = id;
-                    PQ_insert(nao_visitados, make_item(id_vizinho, novo_custo));
+                    PQ_insert(no_visited, make_item(id_vizinho, novo_custo));
                 }
             }
         }
     }
 
-    free(visitados);
+    free(visited);
     free(antecessores);
-    PQ_finish(nao_visitados);    
+    PQ_finish(no_visited);    
 }
 
 void print_rtt(PQ *pq, FILE *s){
